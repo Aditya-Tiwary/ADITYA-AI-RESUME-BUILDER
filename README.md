@@ -267,4 +267,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Framer Motion for beautiful animations
 ---
 
-Built with ❤️ using React, Node.js, and AI
+Built with ❤️ by Aditya Tiwary
