@@ -1,14 +1,14 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const dotenv = require("dotenv");
 const axios = require("axios");
 
 const connectDB = require("../database/connection");
 const authRoutes = require("../routes/auth");
 const resumeRoutes = require("../routes/resume");
-
-dotenv.config();
 
 connectDB();
 
