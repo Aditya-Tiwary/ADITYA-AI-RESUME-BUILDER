@@ -5,6 +5,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const axios = require("axios");
+const path = require("path");
 
 const connectDB = require("../database/connection");
 const authRoutes = require("../routes/auth");
@@ -13,7 +14,7 @@ const resumeRoutes = require("../routes/resume");
 connectDB();
 
 const app = express();
-const PORT = 3002;
+const PORT = process.env.PORT || 3002;
 
 app.use(
   cors({
@@ -636,6 +637,21 @@ function cleanEnhancedText(rawText) {
     .replace(/^\s*\d+\.\s*/gm, "")
     .trim();
 }
+
+// Serve static files from the React app build
+const distPath = path.join(__dirname, '../../dist');
+console.log('📁 Serving static files from:', distPath);
+app.use(express.static(distPath));
+
+// Catch-all handler: serve index.html for any non-API/non-health routes (SPA fallback)
+app.get('*', (req, res) => {
+  // Only serve SPA for non-API routes
+  if (!req.path.startsWith('/api') && !req.path.startsWith('/enhance') && !req.path.startsWith('/health')) {
+    res.sendFile(path.join(distPath, 'index.html'));
+  } else {
+    res.status(404).json({ error: 'Endpoint not found' });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`✅ AI Enhancement API server running on port ${PORT}`);
